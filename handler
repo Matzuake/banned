@@ -1,0 +1,100 @@
+public class t_banned {
+
+    public static boolean playerExists_banned(String uuid) {
+        try {
+            ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE UUID= '" + uuid + "';");
+            if (rs.next())
+                return (rs.getString("uuid") != null);
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static void create_Banned_Player(String name, String uuid, String grund, String Banned, String operator, String date, String milli, String adate) {
+        if (!playerExists_banned(uuid))
+            DatenbaseHandler.mysql.update("INSERT INTO t_banned(Name, uuid, Grund, Banned, Operator, startDate, Millisec, endDate) VALUES ('" + name + "','" + uuid + "','" + grund + "','" + Banned + "','" + operator + "','" + date + "','" + milli + "','" + adate + "');");
+    }
+
+    public static String get_banned_grund(String uuid) {
+        String i = "";
+        if (playerExists_banned(uuid))
+            try {
+                ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE uuid='" + uuid + "';");
+                if (!rs.next() || String.valueOf(rs.getString("Grund")) == null);
+                i = rs.getString("Grund");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return i;
+    }
+
+    public static String get_banned_operator(String uuid) {
+        String i = "";
+        if (playerExists_banned(uuid))
+            try {
+                ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE uuid='" + uuid + "';");
+                if (!rs.next() || String.valueOf(rs.getString("Operator")) == null);
+                i = rs.getString("Operator");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return i;
+    }
+
+    public static int get_check_banned(String uuid) {
+        try {
+            ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE uuid= '" + uuid + "';");
+            if (!rs.next())
+                return 0;
+            return rs.getInt("Banned");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int get_check_duration(String uuid) {
+        try {
+            ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE uuid= '" + uuid + "';");
+            if (!rs.next())
+                return 0;
+            return rs.getInt("Millisec");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static String get_banned_date(String uuid) {
+        String i = "";
+        if (playerExists_banned(uuid))
+            try {
+                ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE uuid='" + uuid + "';");
+                if (!rs.next() || String.valueOf(rs.getString("startDate")) == null);
+                i = rs.getString("startDate");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return i;
+    }
+
+    public static String get_banned_stop_date(String uuid) {
+        String i = "";
+        if (playerExists_banned(uuid))
+            try {
+                ResultSet rs = DatenbaseHandler.mysql.query("SELECT * FROM t_banned WHERE uuid='" + uuid + "';");
+                if (!rs.next() || String.valueOf(rs.getString("endDate")) == null);
+                i = rs.getString("endDate");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return i;
+    }
+    public static void delete_banned_player(String uuid) {
+        if (playerExists_banned(uuid))
+            DatenbaseHandler.mysql.update("DELETE FROM t_banned WHERE uuid= '" + uuid + "';");
+    }
+
+}
